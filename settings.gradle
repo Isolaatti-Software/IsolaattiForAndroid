@@ -1,0 +1,2 @@
+rootProject.name='Isolaatti'
+include ':app'

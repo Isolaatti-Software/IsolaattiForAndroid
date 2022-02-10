@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="imageViewProfilePictureShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="custom_toolbar_style" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="titleTextColor">#FFFFFF</item>
+        <item name="subtitleTextColor">#CBFFFFFF</item>
+    </style>
+
+</resources>
