@@ -8,10 +8,8 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.activity.result.registerForActivityResult
 import com.erik.isolaatti.R
 import com.erik.isolaatti.services.WebApiService
-import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -82,16 +80,13 @@ class WelcomeScreenActivity : AppCompatActivity() {
             Activity.RESULT_CANCELED -> signInWithEmailAndPasswordButton.isEnabled = true
             Activity.RESULT_OK -> {
                 val token = result.data?.getStringExtra("token")
-                Toast.makeText(this,token,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,R.string.signing_in,Toast.LENGTH_SHORT).show()
                 signInWithEmailAndPasswordButton.isEnabled = false
                 // Here it's known that the Isolaatti's sign in process was successful and
                 // a token is returned.
 
-                WebApiService.validateToken(token!!, {state ->
-                    if(state.equals("ok")){
-
-
-                        establishDefaultHttpHeaders(token)
+                WebApiService(application).validateToken(token!!, {state ->
+                    if(state.isValid){
                         val homeScreenIntent = Intent(this, HomeScreenActivity::class.java)
                         homeScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(homeScreenIntent)
@@ -108,14 +103,6 @@ class WelcomeScreenActivity : AppCompatActivity() {
                 })
             }
         }
-    }
-
-    private fun establishDefaultHttpHeaders(token: String){
-        // Here is the place I need to set default headers, which is "sessionToken" header
-        // Usually no other custom headers are needed
-        val customHeaders = HashMap<String,String>()
-        customHeaders["sessionToken"] = token!!
-        WebApiService.setDefaultHeaders(customHeaders)
     }
 
     private fun removeToken(){

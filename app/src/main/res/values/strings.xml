@@ -30,4 +30,22 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="profile">Profile</string>
+    <string name="new_discussion">New</string>
+    <string name="write_here_markdown_compatible">Start your discussion here, markdown is compatible...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="discussions">Discussions</string>
+    <string name="no_posts_to_show">There are no discussions to show</string>
+    <string name="signing_in">Signing in...</string>
+    <string name="profile_info">Info</string>
+    <string name="discussion">Discussions</string>
+    <string name="number_of_likes">Likes</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="bad_credentials">Your username or password is no correct. Try again...</string>
+    <string name="error_no_internet">No Internet connection</string>
+    <string name="error_timeout">Connection timed out</string>
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
+    <string name="cancel">Cancel</string>
 </resources>

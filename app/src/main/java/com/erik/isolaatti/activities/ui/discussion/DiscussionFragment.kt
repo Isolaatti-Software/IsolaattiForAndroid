@@ -1,4 +1,4 @@
-package com.erik.isolaatti.activities.ui.myProfile
+package com.erik.isolaatti.activities.ui.discussion
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,24 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.erik.isolaatti.R
 
-class MyProfileFragment : Fragment() {
+class DiscussionFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MyProfileFragment()
+        fun newInstance() = DiscussionFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: DiscussionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return inflater.inflate(R.layout.discussion_main_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(DiscussionViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

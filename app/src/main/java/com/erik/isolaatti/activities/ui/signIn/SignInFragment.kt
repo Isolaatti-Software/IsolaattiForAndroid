@@ -13,10 +13,15 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import com.android.volley.AuthFailureError
+import com.android.volley.NoConnectionError
+import com.android.volley.ServerError
+import com.android.volley.TimeoutError
 import com.erik.isolaatti.R
 import com.erik.isolaatti.classes.SignInData
 import com.erik.isolaatti.services.TokenStorage
 import com.erik.isolaatti.services.WebApiService
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -77,20 +82,48 @@ class SignInFragment : Fragment() {
         }
 
         signInButton?.setOnClickListener {
-            Log.println(Log.ERROR,"click","Click en iniciar sesión")
-            WebApiService.signIn(viewModel.email.value!!,viewModel.password.value!!,{sessionToken ->
+            WebApiService(requireActivity().application).signIn(viewModel.email.value!!,viewModel.password.value!!,{sessionToken ->
                 TokenStorage.setToken(sessionToken)
-                Log.println(Log.ERROR,"click","Se pidio el token")
-                val headers:MutableMap<String,String> = HashMap()
-                headers["sessionToken"] = sessionToken.token
-                WebApiService.setDefaultHeaders(headers)
 
                 val resultIntent = Intent()
                 resultIntent.putExtra("token", sessionToken.token)
                 activity?.setResult(Activity.RESULT_OK,resultIntent)
                 activity?.finish()
-            },{error->
-                Toast.makeText(context,error.message,Toast.LENGTH_SHORT).show()
+            },{ error->
+                when(error){
+                    is AuthFailureError -> {
+                        val dialogBuilder = MaterialAlertDialogBuilder(requireContext()).apply {
+                            setTitle(R.string.unable_to_sign_in)
+                            setMessage(R.string.bad_credentials)
+
+                            setNegativeButton(R.string.accept) { dialog, which ->
+                                dialog.dismiss()
+                            }
+                        }
+                        dialogBuilder.show()
+                    }
+                    is TimeoutError -> {
+                        val dialogBuilder = MaterialAlertDialogBuilder(requireContext()).apply {
+                            setTitle(R.string.error_timeout)
+
+                            setNegativeButton(R.string.accept) { dialog, which ->
+                                dialog.dismiss()
+                            }
+                        }
+                        dialogBuilder.show()
+                    }
+                    is NoConnectionError -> {
+                        val dialogBuilder = MaterialAlertDialogBuilder(requireContext()).apply {
+                            setTitle(R.string.error_no_internet)
+
+                            setNegativeButton(R.string.accept) { dialog, which ->
+                                dialog.dismiss()
+                            }
+                        }
+                        dialogBuilder.show()
+                    }
+                }
+
             })
 
 
